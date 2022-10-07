@@ -1,0 +1,20 @@
+global:
+  kspm:
+    deploy: true
+
+nodeAnalyzer:
+  nodeAnalyzer:
+    # legacy image scan
+    imageAnalyzer:
+      deploy: false
+    # compliance benchmark runner
+    benchmarkRunner:
+      deploy: false
+    # legacy host scan
+    hostAnalyzer:
+      deploy: false
+    # new runtime image scanner (vulnerability management)
+    runtimeScanner:
+      deploy: true
+      settings:
+        eveEnabled: true
