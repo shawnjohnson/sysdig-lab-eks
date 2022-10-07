@@ -20,7 +20,7 @@ resource "helm_release" "sysdig-agent" {
   }
  
   set {
-    name = "global.clusterConfig"
+    name = "global.clusterConfig.name"
     value = "${var.eks_cluster_name}"
   }
 }
@@ -38,6 +38,8 @@ sysdig:
   url: ${var.sysdig_secure_url}/
   secureAPIToken: ${var.sysdig_secure_api_token}
 clusterName: ${var.eks_cluster_name}
+# Disable legacy scanner gate
+scanner.enabled: false
 features:
   k8sAuditDetections: true
 EOF
