@@ -6,7 +6,6 @@ variable "aws_region" {
 
 variable "eks_cluster_name" {
   type = string
-  default = "eks-lab1"
 }
 
 variable "sysdig_secure_api_token" {
