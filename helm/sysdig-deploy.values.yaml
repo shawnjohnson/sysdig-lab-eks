@@ -7,7 +7,7 @@ nodeAnalyzer:
     # legacy image scan
     imageAnalyzer:
       deploy: false
-    # compliance benchmark runner
+    # (legacy) compliance benchmark runner
     benchmarkRunner:
       deploy: false
     # legacy host scan
@@ -18,3 +18,6 @@ nodeAnalyzer:
       deploy: true
       settings:
         eveEnabled: true
+    # New VM host scanner
+    hostScanner:
+      deploy: true
