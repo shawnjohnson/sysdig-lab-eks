@@ -29,3 +29,8 @@ nodeAnalyzer:
     # New VM host scanner
     hostScanner:
       deploy: true
+
+admissionController: 
+  enabled: true
+  scanner:
+    enabled: false
