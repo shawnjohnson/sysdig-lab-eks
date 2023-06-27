@@ -4,7 +4,7 @@ resource "helm_release" "sysdig-agent" {
   create_namespace = true
   repository = "https://charts.sysdig.com"
   chart      = "sysdig-deploy"
-  version    = "~> 1.5"
+  version    = "~> 1.7"
   values = [
     "${file("helm/sysdig-deploy.values.yaml")}"
   ]
@@ -31,7 +31,7 @@ resource "helm_release" "sysdig-admission" {
   create_namespace = true
   repository = "https://charts.sysdig.com"
   chart      = "admission-controller"
-  version    = "0.6.19"
+  version    = "~> 0.7"
 
   values = [ <<EOF
 sysdig:
