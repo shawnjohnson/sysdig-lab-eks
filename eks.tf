@@ -6,11 +6,31 @@ data "aws_eks_cluster_auth" "eks_cluster" {
 
 module "eks_cluster" {
   source          = "terraform-aws-modules/eks/aws"
-  version         = "~> 18.0"
+  version         = "~> 19.13.1"
   cluster_name    = var.eks_cluster_name
-  cluster_version = "1.22"
+  cluster_version = "1.24"
   subnet_ids      = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
+
+  cluster_endpoint_public_access = true
+
+  cluster_addons = {
+    coredns = {
+      preserve    = true
+      most_recent = true
+
+      timeouts = {
+        create = "25m"
+        delete = "10m"
+      }
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+  }
 
   eks_managed_node_groups = {
     nodes = {
@@ -72,9 +92,9 @@ module "eks_cluster" {
 }
 
 # Create a kubernetes provider for this cluster to be used by other components
-provider "kubernetes" {
-  host                   = module.eks_cluster.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
-  token                  = data.aws_eks_cluster_auth.eks_cluster.token
-}
+# provider "kubernetes" {
+#   host                   = module.eks_cluster.cluster_endpoint
+#   cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
+#   token                  = data.aws_eks_cluster_auth.eks_cluster.token
+# }
 
