@@ -13,6 +13,11 @@ resource "helm_release" "sysdig-agent" {
     name = "global.sysdig.accessKey"
     value = "${var.sysdig_agent_access_key}"
   }
+
+  set {
+    name = "global.sysdig.secureAPIToken"
+    value = "${var.sysdig_secure_api_token}"
+  }
   
   set {
     name = "global.sysdig.region"
