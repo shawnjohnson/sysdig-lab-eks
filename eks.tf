@@ -6,7 +6,7 @@ data "aws_eks_cluster_auth" "eks_cluster" {
 
 module "eks_cluster" {
   source          = "terraform-aws-modules/eks/aws"
-  version         = "~> 19.13.1"
+  version         = "~> 19.0"
   cluster_name    = var.eks_cluster_name
   cluster_version = "1.24"
   subnet_ids      = module.vpc.private_subnets
