@@ -10,6 +10,12 @@ global:
   kspm:
     deploy: true
 
+agent:
+  sysdig:
+    settings:
+      # See: https://docs.sysdig.com/en/docs/release-notes/sysdig-agent-release-notes/#feature-enhancements
+      enrich_with_process_lineage: true
+
 nodeAnalyzer:
   nodeAnalyzer:
     # legacy image scan
