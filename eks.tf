@@ -1,8 +1,27 @@
 # Module docs: https://registry.terraform.io/modules/terraform-aws-modules/eks/aws
 
+# Get current account_id
+data "aws_caller_identity" "current" {}
+
 data "aws_eks_cluster_auth" "eks_cluster" {
   name = var.eks_cluster_name
 }
+
+data "aws_iam_role" "terraform_cloud_admin" {
+  name = "terraform_cloud_admin"
+}
+
+data "aws_iam_role" "aws_sso_admin" {
+  name = var.aws_sso_admin_role_name
+}
+
+output "tf_role" {
+  value = data.aws_iam_role.terraform_cloud_admin
+}
+output "sso_role" {
+  value = data.aws_iam_role.aws_sso_admin
+}
+
 
 module "eks_cluster" {
   source          = "terraform-aws-modules/eks/aws"
@@ -86,15 +105,39 @@ module "eks_cluster" {
     }
   }
 
+  # aws-auth configmap
+  # If issue encountered see: https://github.com/hashicorp/terraform-provider-kubernetes/issues/1720#issuecomment-1453738911
+  create_aws_auth_configmap = true
+  manage_aws_auth_configmap = true
+
+  aws_auth_roles = [
+    # Add SSO Role(s) and Role for Terraform Cloud
+    {
+      rolearn  = data.aws_iam_role.aws_sso_admin.arn
+      username = "awsadmin"
+      groups   = ["system:masters"]
+    },
+    {
+      rolearn  = data.aws_iam_role.terraform_cloud_admin.arn
+      username = "tfcloudadmin"
+      groups   = ["system:masters"]
+    }
+  ]
+
+  # ensure admin roles can access kms key
+  kms_key_administrators = [data.aws_iam_role.aws_sso_admin.arn,
+    data.aws_iam_role.terraform_cloud_admin.arn]
+
   tags = {
     Terraform   = "true"
   }
 }
 
 # Create a kubernetes provider for this cluster to be used by other components
-# provider "kubernetes" {
-#   host                   = module.eks_cluster.cluster_endpoint
-#   cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
-#   token                  = data.aws_eks_cluster_auth.eks_cluster.token
-# }
+# REQUIRED: This block is necessary to get aws-auth map to work
+provider "kubernetes" {
+  host                   = module.eks_cluster.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
+  token                  = data.aws_eks_cluster_auth.eks_cluster.token
+}
 
