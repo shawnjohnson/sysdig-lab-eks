@@ -1,12 +1,13 @@
 terraform {
   cloud {
     organization = "shawnjohnson159"
+    hostname = "app.terraform.io"
     workspaces {
-      name = "aws-eks-lab"
+      name = "sysdig-lab-eks"
     }
   }
   
-  required_version = ">= 1.2.0"
+  required_version = ">= 1.3.0"
 
   required_providers {
     aws = {

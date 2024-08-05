@@ -1,10 +1,11 @@
 resource "helm_release" "sysdig-agent" {
+  count = 1
   name       = "sysdig"
   namespace  = "sysdig-agent"
   create_namespace = true
   repository = "https://charts.sysdig.com"
   chart      = "sysdig-deploy"
-  version    = "~> 1.12"
+  version    = "~> 1.51"
   values = [
     "${file("helm/sysdig-deploy.values.yaml")}"
   ]

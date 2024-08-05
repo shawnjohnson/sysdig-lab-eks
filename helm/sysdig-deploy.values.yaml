@@ -16,27 +16,25 @@ agent:
       # See: https://docs.sysdig.com/en/docs/release-notes/sysdig-agent-release-notes/#feature-enhancements
       enrich_with_process_lineage: true
 
+kspmCollector:
+  enabled: false
+
 nodeAnalyzer:
+  psp:
+    create: false
   nodeAnalyzer:
+    # legacy compliance benchmark runner
+    benchmarkRunner:
+      deploy: false
     # legacy image scan
     imageAnalyzer:
-      deploy: false
-    # (legacy) compliance benchmark runner
-    benchmarkRunner:
       deploy: false
     # legacy host scan
     hostAnalyzer:
       deploy: false
-    # new runtime image scanner (vulnerability management)
+    # VM - disabled - use cluster_scanner
     runtimeScanner:
-      deploy: true
-      settings:
-        eveEnabled: true
-    # New VM host scanner
+      deploy: false
+    # VM host scanner
     hostScanner:
       deploy: true
-
-admissionController: 
-  enabled: true
-  scanner:
-    enabled: false

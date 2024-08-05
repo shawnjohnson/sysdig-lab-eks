@@ -27,7 +27,3 @@ variable "sysdig_agent_access_key" {
   type = string
   sensitive = true
 }
-
-variable "aws_sso_admin_role_name" {
-  type = string
-}
