@@ -38,3 +38,18 @@ nodeAnalyzer:
     # VM host scanner
     hostScanner:
       deploy: true
+clusterShield:
+  enabled: true
+  cluster_shield:
+    features:
+      admission_control:
+        enabled: true
+
+      container_vulnerability_management:
+        enabled: true
+
+      audit:
+        enabled: true
+
+      posture:
+        enabled: true

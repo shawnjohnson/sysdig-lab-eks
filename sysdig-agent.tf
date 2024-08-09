@@ -5,7 +5,7 @@ resource "helm_release" "sysdig-agent" {
   create_namespace = true
   repository = "https://charts.sysdig.com"
   chart      = "sysdig-deploy"
-  version    = "~> 1.51"
+  version    = "~> 1.61"
   values = [
     "${file("helm/sysdig-deploy.values.yaml")}"
   ]
@@ -15,11 +15,6 @@ resource "helm_release" "sysdig-agent" {
     value = "${var.sysdig_agent_access_key}"
   }
 
-  set {
-    name = "global.sysdig.secureAPIToken"
-    value = "${var.sysdig_secure_api_token}"
-  }
-  
   set {
     name = "global.sysdig.region"
     value = "${var.sysdig_region}"
